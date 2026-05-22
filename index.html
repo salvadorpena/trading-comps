@@ -447,12 +447,96 @@ const EXPE_FIN = {
   ]}
 };
 
+// ── TCOM Financial Data ──
+const TCOM_FIN = {
+  pl: { sections: [
+    { label: 'Revenue', rows: [
+      { name: 'Accommodation Reservation',        vals: [507,591,766,550,622,705,964,709,764,869,1127,899] },
+      { name: 'Transportation Ticketing',         vals: [605,637,740,578,693,671,793,655,747,753,886,768] },
+      { name: 'Packaged-Tour',                    vals: [56,102,181,99,122,144,218,119,131,151,226,151] },
+      { name: 'Corporate Travel',                 vals: [65,73,81,89,71,87,92,96,79,97,106,116] },
+      { name: 'Other Revenue',                    vals: [102,143,118,142,136,153,163,168,181,196,232,273] },
+      { name: 'Total Net Revenues',               vals: [1335,1546,1886,1458,1644,1760,2230,1747,1902,2066,2577,2207], total: true },
+    ]},
+    { label: 'Operating Expenses', rows: [
+      { name: 'Cost of Revenue',                  vals: [238,232,283,283,308,317,423,362,373,393,472,463] },
+      { name: 'Product Development (incl. SBC)',  vals: [389,391,484,411,428,411,512,465,486,489,574,576] },
+      { name: 'Sales & Marketing',                vals: [256,356,372,329,319,387,464,462,413,464,587,629] },
+      { name: 'General & Administrative (incl. SBC)', vals: [130,139,140,122,126,147,162,142,143,153,160,171] },
+      { name: 'Total Operating Expenses',         vals: [1013,1118,1279,1145,1181,1262,1561,1431,1415,1499,1793,1839], total: true },
+    ]},
+    { label: 'Income', rows: [
+      { name: 'Operating Income',                 vals: [322,428,607,313,463,498,669,316,487,567,784,368], highlight: true },
+      { name: 'Other Income (Expense), net',      vals: [219,164,86,-68,228,129,382,56,197,253,2481,364] },
+      { name: 'Income Tax Expense',               vals: [50,60,62,56,92,95,101,72,88,139,470,119] },
+      { name: 'Net Income',                       vals: [491,532,631,189,599,532,950,300,596,681,2795,613], highlight: true },
+    ]},
+    { label: 'Adjusted Metrics', rows: [
+      { name: 'Adjusted EBITDA',                  vals: [410,631,637,401,550,603,793,408,586,680,892,490], highlight: true },
+      { name: 'Non-GAAP Net Income',              vals: [300,610,671,376,571,686,841,416,579,699,2697,500] },
+    ]},
+  ]},
+  bs: { sections: [
+    { label: 'Current Assets', rows: [
+      { name: 'Cash & Restricted Cash',           vals: [4452,5154,5509,6195,6836,7131,7749,7000,7767,8140,8319,6642] },
+      { name: 'Short-term Investments',           vals: [2532,2224,2267,2500,3042,3439,3652,3900,2996,3030,2983,4577] },
+      { name: 'Accounts Receivable, net',         vals: [1348,1668,1924,1607,2077,2339,2247,1707,1841,2012,2296,2179] },
+      { name: 'Prepayments & Other Current',      vals: [2208,2223,2404,2196,2350,2476,2670,2753,2871,3083,4019,3911] },
+      { name: 'Total Current Assets',             vals: [10540,11400,11679,12498,13418,14166,15033,15360,15475,16181,17617,17309], total: true },
+    ]},
+    { label: 'Non-Current Assets', rows: [
+      { name: 'PP&E, net',                        vals: [748,723,715,724,706,703,716,692,701,710,773,779] },
+      { name: 'Intangible Assets & Land Use',     vals: [1861,1766,1713,1781,1729,1709,1727,1759,1765,1776,1836,1861] },
+      { name: 'Right-of-Use Assets',              vals: [119,107,97,90,87,81,77,103,99,96,116,126] },
+      { name: 'Long-term Investments (incl. HTM)',vals: [7305,7086,6936,6950,6704,6594,6640,6466,7142,7319,8393,8777] },
+      { name: 'Goodwill',                         vals: [8585,8578,8137,8350,8170,8155,8548,8345,8426,8390,8750,8904] },
+      { name: 'Total Assets',                     vals: [28637,29932,29551,30118,30711,31731,33519,33266,34010,35339,38008,38236], total: true },
+    ]},
+    { label: 'Current Liabilities', rows: [
+      { name: 'Short-term Debt & Current LTD',    vals: [3053,3044,3030,2961,2896,2874,2917,2667,2679,2703,2857,2765] },
+      { name: 'Accounts Payable',                 vals: [2319,2782,3152,2546,2846,3095,3164,2271,2618,2950,2830,2738] },
+      { name: 'Advances from Customers',          vals: [1133,1788,1085,886,1207,1439,1232,1165,1784,2048,3120,2600] },
+      { name: 'Other Current Liabilities',        vals: [1531,1489,1391,1548,1439,1464,1634,1278,1356,1504,3060,3074] },
+      { name: 'Total Current Liabilities',        vals: [7987,9054,8658,7744,8388,9254,9318,9578,10268,11193,11867,11177], total: true },
+    ]},
+    { label: 'Non-Current Liabilities & Equity', rows: [
+      { name: 'Long-term Debt',                   vals: [3053,3044,3030,2961,2896,2874,2879,2756,2759,2741,1550,1634] },
+      { name: 'Total Liabilities',                vals: [12345,13541,13004,12836,12805,13382,13765,13568,14284,15213,14131,13554], total: true },
+      { name: "Total Shareholders' Equity",       vals: [16292,16391,16547,17282,17906,18349,19754,19698,19726,20126,23858,24663], highlight: true },
+    ]},
+  ]},
+  cf: { sections: [
+    { label: 'Operating Activities', rows: [
+      { name: 'Net Income',                       vals: [491,532,631,189,599,532,950,300,596,681,2795,613] },
+      { name: 'D&A',                              vals: [56,56,56,59,58,59,62,62,64,66,67,70] },
+      { name: 'Stock-based Compensation',         vals: [68,67,71,72,70,76,79,76,78,81,84,87] },
+      { name: 'Changes in Working Capital',       vals: [890,-606,-263,-1095,752,-529,-528,-1468,986,-549,-2103,-627] },
+      { name: 'Net Cash from Operations',         vals: [1505,49,495,-775,1479,138,562,-1030,1724,279,843,143], total: true },
+    ]},
+    { label: 'Investing Activities', rows: [
+      { name: 'Capital Expenditures',             vals: [-88,-97,-98,-92,-97,-103,-106,-96,-96,-105,-112,-107] },
+      { name: 'Net Investment Activity',          vals: [-292,-160,-178,-176,-349,-153,-189,-192,-176,-121,-232,-272] },
+      { name: 'Net Cash from Investing',          vals: [-380,-257,-276,-268,-446,-256,-295,-288,-272,-226,-344,-379], total: true },
+    ]},
+    { label: 'Financing Activities', rows: [
+      { name: 'Share Repurchases',                vals: [-262,-208,-275,-113,-208,-275,-351,-206,-345,-377,-393,-214] },
+      { name: 'Dividends Paid',                   vals: [0,0,0,0,0,0,0,0,-193,0,0,-200] },
+      { name: 'Net Cash from Financing',          vals: [-262,-208,-275,-113,-208,-275,-351,-206,-538,-377,-393,-414], total: true },
+    ]},
+    { label: 'Free Cash Flow', rows: [
+      { name: 'Free Cash Flow',                   vals: [1417,-48,397,-867,1382,35,456,-1126,1628,174,731,36], highlight: true },
+    ]},
+  ]}
+};
+
 // ── Company Registry ──
 const COMPANY_REGISTRY = [
   { name: 'Booking Holdings', ticker: 'BKNG', country: 'United States', sector: 'Online Travel', lastQuarter: 'Q4 2025',
     revLtm: 26917, ebitdaLtm: 9937, ltDebt: 16856, stDebt: 1880, cash: 17203, shares: 807, fin: BKNG_FIN },
   { name: 'Expedia Group',    ticker: 'EXPE', country: 'United States', sector: 'Online Travel', lastQuarter: 'Q4 2025',
     revLtm: 14733, ebitdaLtm: 3501, ltDebt: 4469,  stDebt: 1692, cash: 5733,  shares: 128, fin: EXPE_FIN },
+  { name: 'Trip.com Group',   ticker: 'TCOM', country: 'Singapore',     sector: 'Online Travel', lastQuarter: 'Q4 2025',
+    revLtm: 8951,  ebitdaLtm: 2069, ltDebt: 1634,  stDebt: 2765, cash: 11219, shares: 650, fin: TCOM_FIN },
 ];
 
 // ── Helpers ──
@@ -566,7 +650,7 @@ function buildFinTable(data) {
 function openModal(ticker) {
   const co = COMPANY_REGISTRY.find(c => c.ticker === ticker);
   document.getElementById('modal-company-name').textContent = co.name;
-  document.getElementById('modal-company-meta').textContent = `${co.ticker} · NASDAQ · ${co.sector}`;
+  document.getElementById('modal-company-meta').textContent = `${co.ticker} · ${co.exchange || 'NASDAQ'} · ${co.sector}`;
   document.getElementById('modal-overlay').classList.add('open');
 
   document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
