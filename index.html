@@ -1,0 +1,1169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Trading Comparables — Despegar M&A</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f7f8fc;
+    --white: #ffffff;
+    --border: #e4e7f0;
+    --border2: #d0d5e8;
+    --purple: #5c2d91;
+    --purple2: #7b4bb8;
+    --purple3: #ede8f5;
+    --purple4: #f5f2fb;
+    --purple-dark: #3d1a6e;
+    --text: #1a1d2e;
+    --text2: #5a6080;
+    --text3: #9398b0;
+    --green: #1a8a5c;
+    --green-bg: #eaf7f2;
+    --red: #c0392b;
+    --red-bg: #fdf0ef;
+    --shadow: 0 1px 4px rgba(92,45,145,0.07), 0 4px 16px rgba(92,45,145,0.05);
+    --shadow-md: 0 4px 24px rgba(92,45,145,0.12), 0 1px 4px rgba(0,0,0,0.04);
+    --sans: 'Inter', sans-serif;
+    --dm: 'DM Sans', sans-serif;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--sans);
+    font-size: 13px;
+    min-height: 100vh;
+  }
+
+  /* ── Header ── */
+  .header {
+    background: var(--white);
+    border-bottom: 1px solid var(--border);
+    padding: 0 32px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 60px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+  }
+
+  .header-left {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+  }
+
+  .logo-wrap img {
+    height: 26px;
+    display: block;
+  }
+
+  .header-divider {
+    width: 1px;
+    height: 22px;
+    background: var(--border2);
+  }
+
+  .header-title {
+    font-family: var(--dm);
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text2);
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+  }
+
+  .header-right {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .badge {
+    font-size: 11px;
+    font-weight: 500;
+    padding: 4px 10px;
+    border-radius: 20px;
+    border: 1px solid var(--border2);
+    color: var(--text3);
+    letter-spacing: 0.02em;
+  }
+
+  .badge.live {
+    background: var(--green-bg);
+    border-color: #a8ddc9;
+    color: var(--green);
+    font-weight: 600;
+  }
+
+  .dot-live {
+    display: inline-block;
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--green);
+    margin-right: 5px;
+    animation: pulse 2s infinite;
+  }
+
+  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.35} }
+
+  /* ── Sub-header ── */
+  .subheader {
+    background: var(--purple);
+    padding: 10px 32px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .subheader-title {
+    font-family: var(--dm);
+    font-size: 12px;
+    font-weight: 500;
+    color: rgba(255,255,255,0.75);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  .subheader-date {
+    font-size: 11px;
+    color: rgba(255,255,255,0.5);
+  }
+
+  /* ── Main ── */
+  .main { padding: 24px 32px 40px; }
+
+  .section-label {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text3);
+    margin-bottom: 10px;
+  }
+
+  /* ── Table ── */
+  .table-wrap {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: var(--shadow);
+  }
+
+  table { width: 100%; border-collapse: collapse; }
+
+  thead tr {
+    background: var(--purple4);
+    border-bottom: 2px solid var(--border2);
+  }
+
+  thead th {
+    font-size: 10px;
+    font-weight: 600;
+    color: var(--purple);
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    padding: 11px 16px;
+    text-align: right;
+    white-space: nowrap;
+  }
+  thead th:first-child,
+  thead th:nth-child(2),
+  thead th:nth-child(3),
+  thead th:nth-child(4) { text-align: left; }
+
+  tbody tr {
+    border-bottom: 1px solid var(--border);
+    transition: background 0.1s;
+  }
+  tbody tr:last-child { border-bottom: none; }
+  tbody tr:hover { background: var(--purple4); }
+
+  tbody td {
+    padding: 14px 16px;
+    font-size: 13px;
+    color: var(--text);
+    text-align: right;
+    white-space: nowrap;
+    font-variant-numeric: tabular-nums;
+  }
+  tbody td:first-child { text-align: left; }
+  tbody td:nth-child(2),
+  tbody td:nth-child(3),
+  tbody td:nth-child(4) { text-align: left; }
+
+  .company-name {
+    color: var(--purple);
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 13px;
+    transition: color 0.15s;
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+    transition: border-color 0.15s;
+  }
+  .company-name:hover {
+    border-bottom-color: var(--purple2);
+  }
+
+  .ticker-badge {
+    display: inline-block;
+    background: var(--purple3);
+    color: var(--purple);
+    font-size: 10px;
+    font-weight: 700;
+    padding: 2px 7px;
+    border-radius: 4px;
+    letter-spacing: 0.04em;
+  }
+
+  .country { color: var(--text2); font-size: 12px; }
+  .sector { color: var(--text3); font-size: 11px; }
+
+  .multiple-cell {
+    font-weight: 600;
+    color: var(--text);
+  }
+
+  /* Stats bar */
+  .stats-bar {
+    background: var(--purple4);
+    border-top: 1px solid var(--border2);
+    display: flex;
+    gap: 0;
+  }
+  .stat-item {
+    flex: 1;
+    padding: 10px 16px;
+    border-right: 1px solid var(--border);
+    text-align: right;
+  }
+  .stat-item:last-child { border-right: none; }
+  .stat-item:first-child { text-align: left; }
+  .stat-label {
+    font-size: 9px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--purple);
+    display: block;
+    margin-bottom: 2px;
+  }
+  .stat-val {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--text2);
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* ── Footer ── */
+  .footer {
+    background: var(--white);
+    border-top: 1px solid var(--border);
+    padding: 16px 32px;
+    font-size: 11px;
+    color: var(--text3);
+    line-height: 1.5;
+  }
+
+  .footer-title {
+    font-weight: 600;
+    color: var(--text2);
+    margin-bottom: 8px;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .footer-sources {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 16px;
+  }
+
+  .footer-item {
+    padding: 0;
+  }
+
+  .footer-item strong {
+    color: var(--text);
+    font-weight: 600;
+  }
+
+  .footer-item a {
+    color: var(--purple);
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+    transition: border-color 0.15s;
+  }
+
+  .footer-item a:hover {
+    border-bottom-color: var(--purple2);
+  }
+  .modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(30,20,50,0.5);
+    z-index: 100;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    backdrop-filter: blur(3px);
+  }
+  .modal-overlay.open { display: flex; }
+
+  .modal {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    width: 100%;
+    max-width: 1080px;
+    max-height: 88vh;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 24px 80px rgba(60,20,100,0.18), 0 4px 16px rgba(0,0,0,0.08);
+  }
+
+  .modal-header {
+    padding: 0 0 0 0;
+    border-bottom: 1px solid var(--border);
+    flex-shrink: 0;
+    background: var(--white);
+    border-radius: 10px 10px 0 0;
+    overflow: hidden;
+  }
+
+  .modal-top-bar {
+    background: var(--purple);
+    padding: 16px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .modal-company {
+    font-family: var(--dm);
+    font-size: 17px;
+    font-weight: 700;
+    color: #fff;
+    letter-spacing: -0.01em;
+  }
+
+  .modal-meta {
+    font-size: 11px;
+    color: rgba(255,255,255,0.65);
+    margin-top: 2px;
+    font-weight: 400;
+    letter-spacing: 0.03em;
+  }
+
+  .modal-close {
+    background: rgba(255,255,255,0.15);
+    border: 1px solid rgba(255,255,255,0.25);
+    color: rgba(255,255,255,0.8);
+    width: 30px; height: 30px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 15px;
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.15s;
+  }
+  .modal-close:hover {
+    background: rgba(255,255,255,0.25);
+    color: #fff;
+  }
+
+  .modal-tabs {
+    display: flex;
+    padding: 0 24px;
+    border-bottom: 1px solid var(--border);
+    background: var(--white);
+  }
+
+  .tab-btn {
+    background: none;
+    border: none;
+    border-bottom: 2px solid transparent;
+    padding: 12px 16px;
+    font-family: var(--sans);
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.03em;
+    color: var(--text3);
+    cursor: pointer;
+    transition: all 0.15s;
+    margin-bottom: -1px;
+  }
+  .tab-btn:hover { color: var(--text2); }
+  .tab-btn.active {
+    color: var(--purple);
+    border-bottom-color: var(--purple);
+    font-weight: 600;
+  }
+
+  .modal-body {
+    padding: 24px;
+    overflow-y: auto;
+    flex: 1;
+    background: var(--bg);
+  }
+
+  /* ── Financial Tables ── */
+  .fin-table-wrap {
+    overflow-x: auto;
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    box-shadow: var(--shadow);
+  }
+
+  .fin-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 12px;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .fin-table thead th {
+    background: var(--purple4);
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    color: var(--purple);
+    text-transform: uppercase;
+    padding: 10px 14px;
+    text-align: right;
+    border-bottom: 2px solid var(--border2);
+    white-space: nowrap;
+  }
+  .fin-table thead th:first-child {
+    text-align: left;
+    min-width: 230px;
+  }
+
+  .fin-table tbody tr { border-bottom: 1px solid var(--border); }
+  .fin-table tbody tr:last-child { border-bottom: none; }
+  .fin-table tbody tr:hover { background: var(--purple4); }
+
+  .fin-table tbody td {
+    padding: 8px 14px;
+    text-align: right;
+    color: var(--text);
+    white-space: nowrap;
+    font-size: 12px;
+  }
+  .fin-table tbody td:first-child {
+    text-align: left;
+    color: var(--text2);
+    font-size: 11.5px;
+  }
+
+  .fin-table .row-section td {
+    background: #f0ebfa;
+    color: var(--purple);
+    font-size: 9.5px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 6px 14px;
+    border-top: 1px solid var(--border2);
+    border-bottom: 1px solid var(--border2);
+  }
+
+  .fin-table .row-total td {
+    font-weight: 700;
+    color: var(--text) !important;
+    background: var(--purple4);
+    border-top: 1px solid var(--border2);
+  }
+
+  .fin-table .row-highlight td {
+    color: var(--purple) !important;
+    font-weight: 700;
+    background: rgba(92,45,145,0.04);
+  }
+
+  .fin-table .neg { color: var(--red) !important; }
+
+  /* ── News ── */
+  .news-grid { display: flex; flex-direction: column; gap: 0; }
+  .news-item {
+    padding: 14px 0;
+    border-bottom: 1px solid var(--border);
+    background: var(--white);
+  }
+  .news-item:first-child { border-radius: 8px 8px 0 0; padding-top: 16px; }
+  .news-item:last-child { border-bottom: none; border-radius: 0 0 8px 8px; padding-bottom: 16px; }
+  .news-wrap {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 0 16px;
+    box-shadow: var(--shadow);
+  }
+  .news-source {
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--purple2);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin-bottom: 4px;
+  }
+  .news-title {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text);
+    line-height: 1.5;
+    margin-bottom: 4px;
+  }
+  .news-title a { color: inherit; text-decoration: none; }
+  .news-title a:hover { color: var(--purple); }
+  .news-date { font-size: 10px; color: var(--text3); }
+  .news-summary { font-size: 12px; color: var(--text2); margin-top: 5px; line-height: 1.6; }
+
+  /* ── Business ── */
+  .biz-card {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 20px 24px;
+    box-shadow: var(--shadow);
+  }
+  .biz-text { font-size: 13px; color: var(--text2); line-height: 1.85; }
+  .biz-text strong { color: var(--text); font-weight: 600; }
+  .biz-text p + p { margin-top: 12px; }
+
+  /* ── Loading ── */
+  .loading {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: var(--text3);
+    font-size: 12px;
+    padding: 40px 0;
+    justify-content: center;
+  }
+  .spinner {
+    width: 18px; height: 18px;
+    border: 2px solid var(--border2);
+    border-top-color: var(--purple);
+    border-radius: 50%;
+    animation: spin 0.75s linear infinite;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  .tab-content { display: none; }
+  .tab-content.active { display: block; }
+
+  ::-webkit-scrollbar { width: 5px; height: 5px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 3px; }
+  ::-webkit-scrollbar-thumb:hover { background: var(--purple3); }
+</style>
+</head>
+<body>
+
+<!-- Header -->
+<div class="header">
+  <div class="header-left">
+    <div class="logo-wrap">
+      <img src="https://companieslogo.com/img/orig/DESP_BIG-1c252584.png?t=1742715926" alt="Despegar" onerror="this.style.display='none'; this.nextElementSibling.style.display='block'">
+      <span style="display:none;font-family:var(--dm);font-weight:700;font-size:16px;color:var(--purple);">Despegar</span>
+    </div>
+    <div class="header-divider"></div>
+    <div class="header-title">M&amp;A — Trading Comparables</div>
+  </div>
+  <div class="header-right">
+    <div class="badge live"><span class="dot-live"></span>Live Quotes</div>
+    <div class="badge" id="last-updated">—</div>
+  </div>
+</div>
+
+<!-- Sub-header -->
+<div class="subheader">
+  <div class="subheader-title">Online Travel &amp; Hospitality · Comparable Companies Analysis</div>
+  <div class="subheader-date" id="current-date">—</div>
+</div>
+
+<!-- Main -->
+<div class="main">
+  <div class="section-label">Comparable Universe</div>
+  <div class="table-wrap">
+    <table id="comps-table">
+      <thead>
+        <tr>
+          <th>Company</th>
+          <th>Ticker</th>
+          <th>Country</th>
+          <th>Sector</th>
+          <th>Price</th>
+          <th>Avg. 30d</th>
+          <th>Mkt Cap ($M)</th>
+          <th>EV ($M)</th>
+          <th>Rev LTM ($M)</th>
+          <th>EBITDA LTM ($M)</th>
+          <th>EV / Rev</th>
+          <th>EV / EBITDA</th>
+        </tr>
+      </thead>
+      <tbody id="comps-body">
+        <tr>
+          <td colspan="11" style="text-align:center;padding:40px;color:var(--text3);">
+            <div class="spinner" style="margin:0 auto 12px;"></div>
+            Fetching live market data…
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="stats-bar" id="stats-bar" style="display:none;">
+      <div class="stat-item"><span class="stat-label">Summary Stats</span><span class="stat-val" style="color:var(--text3);">2 companies</span></div>
+      <div class="stat-item" id="stat-evrev"><span class="stat-label">EV/Rev Median</span><span class="stat-val">—</span></div>
+      <div class="stat-item" id="stat-evebitda"><span class="stat-label">EV/EBITDA Median</span><span class="stat-val">—</span></div>
+      <div class="stat-item" id="stat-mktcap"><span class="stat-label">Mkt Cap</span><span class="stat-val">—</span></div>
+      <div class="stat-item" id="stat-ev"><span class="stat-label">Enterprise Value</span><span class="stat-val">—</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- Footer -->
+<div class="footer">
+  <div class="footer-title">Data Sources</div>
+  <div class="footer-sources">
+    <div class="footer-item">
+      <strong>Live Stock Prices & 30d Avg:</strong> <a href="https://finance.yahoo.com/" target="_blank">Yahoo Finance</a> (via API)
+    </div>
+    <div class="footer-item">
+      <strong>Financial Statements (P&L, BS, CF):</strong> Company filings & earnings reports (Q4 2025 LTM)
+    </div>
+    <div class="footer-item">
+      <strong>Business Summaries:</strong> <a href="https://www.anthropic.com/" target="_blank">Claude AI</a> (Anthropic API)
+    </div>
+    <div class="footer-item">
+      <strong>Latest News:</strong> <a href="https://news.google.com/" target="_blank">Google News RSS</a> Feed
+    </div>
+  </div>
+</div>
+
+<!-- Modal -->
+<div class="modal-overlay" id="modal-overlay">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-top-bar">
+        <div>
+          <div class="modal-company" id="modal-company-name">Booking Holdings</div>
+          <div class="modal-meta" id="modal-company-meta">BKNG &nbsp;·&nbsp; NASDAQ &nbsp;·&nbsp; Online Travel</div>
+        </div>
+        <button class="modal-close" onclick="closeModal()">✕</button>
+      </div>
+      <div class="modal-tabs">
+        <button class="tab-btn active" onclick="switchTab('pl', this)">P&amp;L</button>
+        <button class="tab-btn" onclick="switchTab('bs', this)">Balance Sheet</button>
+        <button class="tab-btn" onclick="switchTab('cf', this)">Cash Flow</button>
+        <button class="tab-btn" onclick="switchTab('biz', this)">Business</button>
+        <button class="tab-btn" onclick="switchTab('news', this)">Latest News</button>
+      </div>
+    </div>
+    <div class="modal-body">
+      <div class="tab-content active" id="tab-pl"></div>
+      <div class="tab-content" id="tab-bs"></div>
+      <div class="tab-content" id="tab-cf"></div>
+      <div class="tab-content" id="tab-biz"><div class="loading"><div class="spinner"></div>Generating with Claude…</div></div>
+      <div class="tab-content" id="tab-news"><div class="loading"><div class="spinner"></div>Fetching latest news…</div></div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ── Data ──
+const QUARTERS = ['Q1 23','Q2 23','Q3 23','Q4 23','Q1 24','Q2 24','Q3 24','Q4 24','Q1 25','Q2 25','Q3 25','Q4 25'];
+
+const PL_DATA = {
+  sections: [
+    { label: 'Revenue', rows: [
+      { name: 'Merchant Revenues',        vals: [1752,2770,3945,2469,2388,3446,4972,3336,2918,4457,6131,4249] },
+      { name: 'Agency Revenues',          vals: [1782,2429,3135,2068,1763,2144,2753,1864,1564,2044,2569,1791] },
+      { name: 'Advertising & Other',      vals: [244,263,261,247,264,269,269,271,280,297,308,309] },
+      { name: 'Total Revenues',           vals: [3778,5462,7341,4784,4415,5859,7994,5471,4762,6798,9008,6349], total: true },
+    ]},
+    { label: 'Operating Expenses', rows: [
+      { name: 'Marketing',                vals: [1517,1801,2022,1433,1610,1939,2151,1578,1777,2139,2340,1930] },
+      { name: 'Sales & Other',            vals: [570,717,807,650,678,820,872,750,702,899,1022,830] },
+      { name: 'Personnel (incl. SBC)',    vals: [722,752,788,1032,826,807,868,853,693,896,945,869] },
+      { name: 'G&A',                      vals: [262,254,305,739,186,112,575,163,142,199,254,262] },
+      { name: 'IT',                       vals: [137,144,187,187,187,183,194,207,200,219,242,247] },
+      { name: 'D&A',                      vals: [120,121,129,134,137,142,155,157,154,158,160,151] },
+      { name: 'Total Operating Expenses', vals: [3328,3789,4238,4175,3624,4003,4815,3742,3700,4548,5525,4319], total: true },
+    ]},
+    { label: 'Income', rows: [
+      { name: 'Operating Income',         vals: [450,1673,3103,609,791,1856,3179,1729,1062,2250,3483,2030], highlight: true },
+      { name: 'Interest Expense',         vals: [-194,-241,-254,-208,-219,-264,-305,-507,-649,-418,-301,-249] },
+      { name: 'Interest & Dividend Income',vals: [228,266,289,237,243,293,327,251,241,234,248,198] },
+      { name: 'Other Income / (Expense)', vals: [-181,-80,11,-227,122,37,-332,91,-258,-962,39,-116] },
+      { name: 'Income Before Tax',        vals: [303,1618,3149,411,937,1922,2869,1564,396,1104,3469,1863], total: true },
+      { name: 'Income Tax Expense',       vals: [37,328,638,189,161,401,352,496,63,209,721,435] },
+      { name: 'Net Income',               vals: [266,1290,2511,222,776,1521,2517,1068,333,895,2748,1428], highlight: true },
+    ]},
+    { label: 'Adjusted Metrics', rows: [
+      { name: 'Adjusted EBITDA',          vals: [586,1778,3284,1464,898,1895,3665,1848,1088,2423,4231,2195], highlight: true },
+      { name: 'Free Cash Flow',           vals: [2800,1645,1301,1253,2574,2379,2296,644,3162,3137,1371,1416] },
+    ]},
+  ]
+};
+
+const BS_DATA = {
+  sections: [
+    { label: 'Current Assets', rows: [
+      { name: 'Cash & Equivalents',        vals: [14140,14602,13294,12107,15629,16290,15775,16164,15578,17595,16509,17203] },
+      { name: 'Accounts Receivable, net',  vals: [2048,2805,3447,3253,3296,3814,3649,3199,3290,4370,4013,3820] },
+      { name: 'Prepaid Expenses',          vals: [655,849,680,644,737,670,490,587,530,626,579,611] },
+      { name: 'Other Current Assets',      vals: [430,453,434,454,452,482,615,541,552,672,602,630] },
+      { name: 'Total Current Assets',      vals: [17632,19349,18479,17034,20476,21293,20529,20491,19950,23263,21703,22264], total: true },
+    ]},
+    { label: 'Non-Current Assets', rows: [
+      { name: 'PP&E, net',                 vals: [699,732,733,784,805,875,882,832,857,848,817,807] },
+      { name: 'Goodwill',                  vals: [2816,2821,2804,2826,2815,2814,2838,2799,2816,2855,2669,2669] },
+      { name: 'Intangible Assets, net',    vals: [1777,1722,1660,1613,1553,1498,1450,1382,1333,1291,961,918] },
+      { name: 'Long-term Investments',     vals: [806,440,420,440,443,468,500,536,538,559,651,582] },
+      { name: 'Total Assets',              vals: [25206,26558,25635,24342,27728,28541,27978,27708,27191,30684,28752,29264], total: true },
+    ]},
+    { label: 'Current Liabilities', rows: [
+      { name: 'Accounts Payable',          vals: [2132,2123,3020,3374,3268,3928,4065,3824,3292,4280,4025,5094] },
+      { name: 'Accrued Expenses',          vals: [3584,3463,4182,4741,4774,3900,5287,6047,5576,4208,4958,4454] },
+      { name: 'Deferred Merchant Bookings',vals: [4500,6040,3717,3254,5328,6931,4907,4031,6871,9149,6283,5270] },
+      { name: 'Short-term Debt',           vals: [854,855,1913,1961,3462,3447,2419,1745,655,999,999,1880] },
+      { name: 'Total Current Liabilities', vals: [11070,12481,12832,13330,16832,18206,16678,15647,16394,18636,16265,16698], total: true },
+    ]},
+    { label: 'Non-Current Liabilities & Equity', rows: [
+      { name: 'Long-term Debt',            vals: [11272,13198,11856,12223,13438,13361,13793,14853,15369,17473,15997,16856] },
+      { name: 'Total Liabilities',         vals: [24132,27223,26260,27086,31780,32817,31631,31728,33303,37341,33488,34842], total: true },
+      { name: 'Total Equity (Deficit)',    vals: [1074,-665,-625,-2744,-4052,-4276,-3653,-4020,-6112,-6657,-4736,-5578], highlight: true },
+    ]},
+  ]
+};
+
+const CF_DATA = {
+  sections: [
+    { label: 'Operating Activities', rows: [
+      { name: 'Net Income',                vals: [266,1290,2511,222,776,1521,2517,1068,333,895,2748,1428] },
+      { name: 'D&A',                       vals: [120,121,129,134,137,142,155,157,154,158,160,151] },
+      { name: 'Stock-based Compensation',  vals: [113,128,128,161,144,140,148,167,143,154,153,167] },
+      { name: 'Deferred Income Taxes',     vals: [-340,-49,-20,-69,-35,33,-73,173,-144,-258,-81,-33] },
+      { name: 'Changes in Working Capital',vals: [2476,738,-867,-1358,1703,517,-365,-1440,2051,3086,-1834,-581] },
+      { name: 'Net Cash from Operations',  vals: [2889,1737,1372,1346,2704,2525,2373,721,3283,3201,1435,1490], total: true },
+    ]},
+    { label: 'Investing Activities', rows: [
+      { name: 'Capital Expenditures',      vals: [-88,-92,-71,-94,-130,-146,-77,-76,-121,-64,-64,-73] },
+      { name: 'Proceeds from Investments', vals: [1683,54,48,55,218,297,75,0,0,0,0,0] },
+      { name: 'Other Investing',           vals: [-9,-1,1,12,-19,-14,0,34,3,3,1,2] },
+      { name: 'Net Cash from Investing',   vals: [1586,-39,-2,-39,69,137,-2,-75,-118,-61,-63,-71], total: true },
+    ]},
+    { label: 'Financing Activities', rows: [
+      { name: 'Debt Issuance',             vals: [0,1893,0,0,2959,0,0,1877,0,1955,0,1726] },
+      { name: 'Debt Repayment',            vals: [-500,0,0,0,0,0,-1114,-198,-1530,-1921,-1519,0] },
+      { name: 'Share Repurchases',         vals: [-2150,-3099,-2640,-2488,-1856,-1662,-1764,-1227,-2170,-1498,-653,-2119] },
+      { name: 'Dividends Paid',            vals: [0,0,0,0,-299,-295,-291,-289,-319,-312,-310,-307] },
+      { name: 'Net Cash from Financing',   vals: [-2562,-1225,-2632,-2490,784,-1966,-3165,143,-3967,-1797,-2484,-667], total: true },
+    ]},
+    { label: 'Free Cash Flow', rows: [
+      { name: 'Free Cash Flow',            vals: [2800,1645,1301,1253,2574,2379,2296,644,3162,3137,1371,1416], highlight: true },
+    ]},
+  ]
+};
+
+// ── LTM helpers ──
+function ltm(arr) { return arr.slice(-4).reduce((a,b)=>a+b,0); }
+
+const BKNG_REV_LTM    = ltm(PL_DATA.sections[0].rows[3].vals);  // Total Revenues
+const BKNG_EBITDA_LTM = ltm(PL_DATA.sections[3].rows[0].vals);  // Adj. EBITDA
+const BKNG_SHARES     = 807;  // Q4 25 diluted shares (millions)
+const BKNG_LT_DEBT    = 16856; // Q4 25
+const BKNG_ST_DEBT    = 1880;  // Q4 25
+const BKNG_CASH       = 17203; // Q4 25
+const BKNG_NET_DEBT   = BKNG_LT_DEBT + BKNG_ST_DEBT - BKNG_CASH;
+// ── EXPE Data (from Expedia Group earnings releases Q1 2023 – Q4 2025) ──
+const EXPE_PL_DATA = {
+  sections: [
+    { label: 'Revenue', rows: [
+      { name: 'Lodging',                    vals: [2029,2698,3233,2304,2228,2862,3317,2543,2289,3040,3604,2819] },
+      { name: 'Air',                        vals: [113,111,100,86,115,111,104,98,107,105,101,94] },
+      { name: 'Advertising & Media',        vals: [175,201,240,205,215,229,269,241,259,280,331,305] },
+      { name: 'Other',                      vals: [348,348,356,292,331,356,370,302,333,361,376,329] },
+      { name: 'Total Revenues',             vals: [2665,3358,3929,2887,2889,3558,4060,3184,2988,3786,4412,3547], total: true },
+    ]},
+    { label: 'Operating Expenses', rows: [
+      { name: 'Cost of Revenue',            vals: [392,365,378,438,358,362,388,335,357,377,376,346] },
+      { name: 'Selling & Marketing – Direct',vals: [1551,1530,1527,1599,1650,1793,1855,1548,1757,1920,1976,1696] },
+      { name: 'Selling & Marketing – Indirect',vals:[197,191,195,173,186,197,197,201,199,213,211,213] },
+      { name: 'Technology & Content',       vals: [355,340,328,335,341,331,320,322,320,325,310,322] },
+      { name: 'General & Administrative',   vals: [202,184,180,205,186,180,229,210,180,197,186,202] },
+      { name: 'D&A',                        vals: [198,200,204,205,210,205,211,212,219,223,225,220] },
+      { name: 'Impairment',                 vals: [0,0,0,297,0,0,33,114,0,0,0,0] },
+      { name: 'Legal Reserves & Other',     vals: [2,1,2,3,20,21,59,18,0,2,86,97] },
+      { name: 'Restructuring',              vals: [0,0,0,0,48,18,6,8,26,44,6,31] },
+      { name: 'Total Operating Expenses',   vals: [2897,2811,2814,3255,2999,3107,3298,2968,3058,3371,3376,3127], total: true },
+    ]},
+    { label: 'Income', rows: [
+      { name: 'Operating Income (Loss)',    vals: [-232,547,1115,-368,-110,451,762,216,-70,415,1036,420], highlight: true },
+      { name: 'Interest Income',            vals: [41,49,52,65,51,67,67,50,54,74,69,58] },
+      { name: 'Interest Expense',           vals: [-64,-65,-61,-55,-62,-61,-61,-62,-58,-58,-62,-121] },
+      { name: 'Other Income / (Expense)',   vals: [-61,24,-23,63,-34,31,106,131,-143,-78,88,-103] },
+      { name: 'Income Before Tax',          vals: [-316,555,1083,-295,-155,488,874,335,-217,423,1131,254], total: true },
+      { name: 'Income Tax Provision',       vals: [-68,120,250,-67,19,113,190,34,-20,101,167,42] },
+      { name: 'Net Income (Loss)',          vals: [-145,385,425,132,-135,386,684,299,-200,330,959,205], highlight: true },
+    ]},
+    { label: 'Adjusted Metrics', rows: [
+      { name: 'Adjusted EBITDA',            vals: [185,747,1216,532,255,786,1250,643,296,908,1449,848], highlight: true },
+      { name: 'Free Cash Flow',             vals: [1646,102,827,-1225,1846,-71,-732,7,2010,1175,-2072,119] },
+    ]},
+  ]
+};
+
+const EXPE_BS_DATA = {
+  sections: [
+    { label: 'Current Assets', rows: [
+      { name: 'Cash & Equivalents',         vals: [3793,5253,5477,4225,4376,5557,5413,4183,5715,6060,5787,5413] },
+      { name: 'Restricted Cash',            vals: [1597,1528,1396,1436,1618,1710,1570,1391,2019,2213,2003,1563] },
+      { name: 'Short-term Investments',     vals: [25,25,26,28,248,264,299,300,411,419,442,320] },
+      { name: 'Accounts Receivable, net',   vals: [3154,3862,4060,2786,3474,4154,4234,3213,4449,5164,4963,4166] },
+      { name: 'Prepaid & Other',            vals: [640,679,589,755,697,734,676,728,993,1035,891,737] },
+      { name: 'Total Current Assets',       vals: [9209,11347,11548,9230,10413,12419,12192,9815,13587,14891,14086,12199], total: true },
+    ]},
+    { label: 'Non-Current Assets', rows: [
+      { name: 'PP&E, net',                  vals: [2287,2319,2351,2359,2383,2444,2461,2413,2422,2461,2481,2447] },
+      { name: 'Goodwill',                   vals: [6869,6878,6846,6819,6812,6820,6835,6844,6847,6864,6871,6872] },
+      { name: 'Intangible Assets, net',     vals: [927,879,831,798,753,709,640,817,808,798,773,819] },
+      { name: 'LT Investments & Other',     vals: [1788,1675,1727,1698,1696,1698,1698,1698,1608,1607,1575,1387] },
+      { name: 'Total Assets',               vals: [21983,24023,24168,21711,22878,24896,24631,22388,26114,27452,26607,24452], total: true },
+    ]},
+    { label: 'Current Liabilities', rows: [
+      { name: 'Accounts Payable, Merchant', vals: [1770,2188,2336,1889,1976,2276,2302,2031,1812,2226,2208,2188] },
+      { name: 'Accounts Payable, Other',    vals: [1009,1065,1128,1090,1037,1067,1076,1039,1126,1188,1195,1103] },
+      { name: 'Deferred Merchant Bookings', vals: [7804,9641,7898,6498,8736,10461,8774,8517,12915,14892,11942,10428] },
+      { name: 'Accrued Expenses & Other',   vals: [912,891,831,895,855,793,872,930,974,981,985,1246] },
+      { name: 'Current Maturities of LT Debt',vals:[749,749,750,750,1049,1043,1044,1043,1746,1737,1692,1692] },
+      { name: 'Total Current Liabilities',  vals: [12244,14534,12943,11122,13653,15640,14068,13611,18573,21024,18022,16657], total: true },
+    ]},
+    { label: 'Non-Current Liabilities & Equity', rows: [
+      { name: 'Long-term Debt',             vals: [6217,6217,6215,6213,6213,6210,6208,5223,4465,4466,4466,4469] },
+      { name: 'Total Liabilities',          vals: [19366,21603,19966,18158,20655,22611,21023,19578,23793,26256,24286,21909], total: true },
+      { name: "Total Stockholders' Equity", vals: [1364,1216,2996,2408,1087,1079,2427,1557,1072,1039,1128,1284], highlight: true },
+    ]},
+  ]
+};
+
+const EXPE_CF_DATA = {
+  sections: [
+    { label: 'Operating Activities', rows: [
+      { name: 'Net Income (Loss)',          vals: [-145,385,425,132,-135,386,684,299,-200,330,959,205] },
+      { name: 'D&A',                        vals: [198,200,204,205,210,205,211,212,219,223,225,220] },
+      { name: 'Stock-based Compensation',   vals: [81,84,86,80,85,80,88,93,98,100,90,105] },
+      { name: 'Changes in Working Capital', vals: [1628,-443,241,-1488,1716,-198,-523,-534,2018,657,-2361,-276] },
+      { name: 'Other Operating Items',      vals: [50,50,50,50,60,42,12,128,65,65,80,50] },
+      { name: 'Net Cash from Operations',   vals: [1812,276,1006,-1051,2016,115,-526,198,2200,1375,-1881,304], total: true },
+    ]},
+    { label: 'Investing Activities', rows: [
+      { name: 'Capital Expenditures',       vals: [-166,-174,-179,-174,-170,-186,-206,-191,-190,-200,-191,-185] },
+      { name: 'Purchases/Sales of Investments',vals:[0,0,0,0,-220,0,0,0,-80,0,50,120] },
+      { name: 'Other Investing',            vals: [-20,-20,-20,-20,-20,-20,-20,-35,-10,-10,-10,10] },
+      { name: 'Net Cash from Investing',    vals: [-186,-194,-199,-194,-410,-206,-226,-226,-280,-210,-151,-55], total: true },
+    ]},
+    { label: 'Financing Activities', rows: [
+      { name: 'Debt Issuance',              vals: [0,0,0,0,0,0,0,0,0,985,0,0] },
+      { name: 'Debt Repayment',             vals: [0,0,0,0,0,0,0,0,-1044,0,0,0] },
+      { name: 'Share Repurchases',          vals: [-427,-561,-371,-272,-328,-552,-604,-355,-330,-627,-451,-522] },
+      { name: 'Dividends Paid',             vals: [0,0,0,0,0,0,0,0,-51,-52,-200,-51] },
+      { name: 'Net Cash from Financing',    vals: [-407,-541,-351,-252,-308,-532,-584,-335,-1415,-284,-641,-563], total: true },
+    ]},
+    { label: 'Free Cash Flow', rows: [
+      { name: 'Free Cash Flow',             vals: [1646,102,827,-1225,1846,-71,-732,7,2010,1175,-2072,119], highlight: true },
+    ]},
+  ]
+};
+
+// ── Per-company data registry ──
+const COMPANY_DATA = {
+  BKNG: {
+    name: 'Booking Holdings',
+    meta: 'BKNG &nbsp;·&nbsp; NASDAQ &nbsp;·&nbsp; Online Travel',
+    pl: PL_DATA, bs: BS_DATA, cf: CF_DATA,
+    bizPrompt: `Write a concise but comprehensive business description of Booking Holdings (BKNG) for an M&A analyst. Cover: 1) Core business model, 2) Key brands (Booking.com, Priceline, Agoda, Kayak, OpenTable), 3) Revenue model (merchant vs agency), 4) Key markets and geographic exposure, 5) Competitive positioning. Format as clean paragraphs. Use <strong> for key terms. Under 350 words. No headers.`,
+    newsQuery: 'Booking Holdings BKNG earnings'
+  },
+  EXPE: {
+    name: 'Expedia Group',
+    meta: 'EXPE &nbsp;·&nbsp; NASDAQ &nbsp;·&nbsp; Online Travel',
+    pl: EXPE_PL_DATA, bs: EXPE_BS_DATA, cf: EXPE_CF_DATA,
+    bizPrompt: `Write a concise but comprehensive business description of Expedia Group (EXPE) for an M&A analyst. Cover: 1) Core business model, 2) Key brands (Expedia, Hotels.com, Vrbo, Orbitz, B2B/Private Label Solutions), 3) Revenue model (B2C vs B2B), 4) Key markets and geographic exposure, 5) Competitive positioning vs Booking Holdings. Format as clean paragraphs. Use <strong> for key terms. Under 350 words. No headers.`,
+    newsQuery: 'Expedia Group EXPE earnings'
+  }
+};
+
+// ── EXPE Capital Structure (Q4 2025) ──
+const EXPE_REV_LTM    = ltm(EXPE_PL_DATA.sections[0].rows[4].vals);   // Total Revenues
+const EXPE_EBITDA_LTM = ltm(EXPE_PL_DATA.sections[3].rows[0].vals);   // Adj. EBITDA
+const EXPE_SHARES     = 128;   // Q4 25 diluted shares (millions) — from earnings release
+const EXPE_LT_DEBT    = 4469;  // Q4 25 long-term debt
+const EXPE_ST_DEBT    = 1692;  // Q4 25 current maturities
+const EXPE_CASH       = 5733;  // Q4 25: cash $5,413 + ST investments $320
+const EXPE_NET_DEBT   = EXPE_LT_DEBT + EXPE_ST_DEBT - EXPE_CASH;
+
+
+// ── Format ──
+function fmt(n) {
+  if (n === null || n === undefined || n === '') return '—';
+  return Math.abs(n).toLocaleString('en-US',{maximumFractionDigits:0});
+}
+function fmtSigned(n) {
+  if (n === null || n === undefined) return '—';
+  if (n < 0) return '(' + fmt(n) + ')';
+  return fmt(n);
+}
+function fmtX(n) {
+  if (!n || isNaN(n)) return '—';
+  return n.toFixed(1) + 'x';
+}
+function fmtPrice(n) {
+  if (!n) return '—';
+  return '$' + n.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
+}
+
+// ── Live quote ──
+async function fetchQuote(ticker) {
+  const url = `https://query1.finance.yahoo.com/v8/finance/chart/${ticker}?interval=1d&range=30d`;
+  const proxy = `https://api.allorigins.win/raw?url=${encodeURIComponent(url)}`;
+  try {
+    const r = await fetch(proxy);
+    const d = await r.json();
+    const meta = d.chart.result[0].meta;
+    const currentPrice = meta.regularMarketPrice || meta.previousClose;
+    
+    // Calcular promedio de 30 días
+    const closes = d.chart.result[0].indicators.quote[0].close.filter(x => x !== null);
+    const avg30 = closes.length > 0 ? closes.reduce((a, b) => a + b, 0) / closes.length : null;
+    
+    return { current: currentPrice, avg30: avg30 };
+  } catch(e) { 
+    console.error('Error fetching quote:', e);
+    return null; 
+  }
+}
+
+
+// ── Render comps ──
+async function renderComps() {
+  const [bkngData, expeData] = await Promise.all([
+    fetchQuote('BKNG'), fetchQuote('EXPE')
+  ]);
+
+  const bkngPrice = bkngData?.current;
+  const bkngAvg30 = bkngData?.avg30;
+  const expePrice = expeData?.current;
+  const expeAvg30 = expeData?.avg30;
+
+  const now = new Date();
+  document.getElementById('last-updated').textContent =
+    'As of ' + now.toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'});
+  document.getElementById('current-date').textContent =
+    now.toLocaleDateString('en-US',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
+
+  // BKNG
+  const bkngMktCap = bkngPrice ? Math.round(bkngPrice * BKNG_SHARES) : null;
+  const bkngEV     = bkngMktCap ? bkngMktCap + BKNG_NET_DEBT : null;
+  const bkngEvRev  = bkngEV ? bkngEV / BKNG_REV_LTM : null;
+  const bkngEvEb   = bkngEV ? bkngEV / BKNG_EBITDA_LTM : null;
+
+  // EXPE
+  const expeMktCap = expePrice ? Math.round(expePrice * EXPE_SHARES) : null;
+  const expeEV     = expeMktCap ? expeMktCap + EXPE_NET_DEBT : null;
+  const expeEvRev  = expeEV ? expeEV / EXPE_REV_LTM : null;
+  const expeEvEb   = expeEV ? expeEV / EXPE_EBITDA_LTM : null;
+
+  document.getElementById('comps-body').innerHTML = `
+    <tr>
+      <td><span class="company-name" onclick="openModal('BKNG')">Booking Holdings</span></td>
+      <td><span class="ticker-badge">BKNG</span></td>
+      <td><span class="country">United States</span></td>
+      <td><span class="sector">Online Travel</span></td>
+      <td>${bkngPrice ? fmtPrice(bkngPrice) : '<span style="color:var(--red)">N/A</span>'}</td>
+      <td>${bkngAvg30 ? fmtPrice(bkngAvg30) : '<span style="color:var(--red)">N/A</span>'}</td>
+      <td>${bkngMktCap ? fmt(bkngMktCap) : '—'}</td>
+      <td>${bkngEV ? fmt(bkngEV) : '—'}</td>
+      <td>${fmt(BKNG_REV_LTM)}</td>
+      <td>${fmt(BKNG_EBITDA_LTM)}</td>
+      <td class="multiple-cell">${fmtX(bkngEvRev)}</td>
+      <td class="multiple-cell">${fmtX(bkngEvEb)}</td>
+    </tr>
+    <tr>
+      <td><span class="company-name" onclick="openModal('EXPE')">Expedia Group</span></td>
+      <td><span class="ticker-badge">EXPE</span></td>
+      <td><span class="country">United States</span></td>
+      <td><span class="sector">Online Travel</span></td>
+      <td>${expePrice ? fmtPrice(expePrice) : '<span style="color:var(--red)">N/A</span>'}</td>
+      <td>${expeAvg30 ? fmtPrice(expeAvg30) : '<span style="color:var(--red)">N/A</span>'}</td>
+      <td>${expeMktCap ? fmt(expeMktCap) : '—'}</td>
+      <td>${expeEV ? fmt(expeEV) : '—'}</td>
+      <td>${fmt(EXPE_REV_LTM)}</td>
+      <td>${fmt(EXPE_EBITDA_LTM)}</td>
+      <td class="multiple-cell">${fmtX(expeEvRev)}</td>
+      <td class="multiple-cell">${fmtX(expeEvEb)}</td>
+    </tr>`;
+
+  // Stats bar — median of available multiples
+  const evRevs  = [bkngEvRev, expeEvRev].filter(x => x && isFinite(x));
+  const evEbs   = [bkngEvEb,  expeEvEb ].filter(x => x && isFinite(x));
+  const mktCaps = [bkngMktCap, expeMktCap].filter(Boolean);
+  const evs     = [bkngEV, expeEV].filter(Boolean);
+
+  function median(arr) {
+    if (!arr.length) return null;
+    const s = [...arr].sort((a,b)=>a-b);
+    const m = Math.floor(s.length/2);
+    return s.length % 2 ? s[m] : (s[m-1]+s[m])/2;
+  }
+
+  if (evs.length) {
+    document.getElementById('stats-bar').style.display = 'flex';
+    document.querySelector('#stat-evrev .stat-val').textContent    = fmtX(median(evRevs));
+    document.querySelector('#stat-evebitda .stat-val').textContent = fmtX(median(evEbs));
+    document.querySelector('#stat-mktcap .stat-val').textContent   = '$' + fmt(mktCaps.reduce((a,b)=>a+b,0)) + 'M';
+    document.querySelector('#stat-ev .stat-val').textContent       = '$' + fmt(evs.reduce((a,b)=>a+b,0)) + 'M';
+  }
+}
+
+
+// ── Financial table builder ──
+function buildFinTable(data) {
+  let html = `<div class="fin-table-wrap"><table class="fin-table">
+    <thead><tr>
+      <th>USD Millions</th>
+      ${QUARTERS.map(q=>`<th>${q}</th>`).join('')}
+    </tr></thead><tbody>`;
+
+  for (const section of data.sections) {
+    html += `<tr class="row-section"><td colspan="${QUARTERS.length+1}">${section.label}</td></tr>`;
+    for (const row of section.rows) {
+      const cls = row.total ? 'row-total' : row.highlight ? 'row-highlight' : '';
+      html += `<tr class="${cls}">
+        <td>${row.name}</td>
+        ${row.vals.map(v => {
+          const isNeg = v < 0;
+          const display = v === 0 ? '—' : (isNeg ? `(${fmt(v)})` : fmt(v));
+          return `<td class="${isNeg ? 'neg' : ''}">${display}</td>`;
+        }).join('')}
+      </tr>`;
+    }
+  }
+  html += `</tbody></table></div>`;
+  return html;
+}
+
+// ── Modal ──
+let currentTicker = null;
+
+function openModal(ticker) {
+  currentTicker = ticker;
+  const co = COMPANY_DATA[ticker];
+  document.getElementById('modal-company-name').textContent = co.name;
+  document.getElementById('modal-company-meta').innerHTML   = co.meta;
+  document.getElementById('modal-overlay').classList.add('open');
+
+  // Reset tabs
+  document.querySelectorAll('.tab-content').forEach(t => { t.classList.remove('active'); t.dataset.loaded = ''; });
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.querySelector('.tab-btn').classList.add('active');
+  document.getElementById('tab-pl').classList.add('active');
+
+  document.getElementById('tab-pl').innerHTML   = buildFinTable(co.pl);
+  document.getElementById('tab-bs').innerHTML   = buildFinTable(co.bs);
+  document.getElementById('tab-cf').innerHTML   = buildFinTable(co.cf);
+  document.getElementById('tab-biz').innerHTML  = '<div class="loading"><div class="spinner"></div>Generating with Claude…</div>';
+  document.getElementById('tab-news').innerHTML = '<div class="loading"><div class="spinner"></div>Fetching latest news…</div>';
+
+  loadBusiness(ticker);
+  loadNews(ticker);
+}
+
+function closeModal() {
+  document.getElementById('modal-overlay').classList.remove('open');
+}
+
+document.getElementById('modal-overlay').addEventListener('click', function(e) {
+  if (e.target === this) closeModal();
+});
+
+function switchTab(name, btn) {
+  document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-' + name).classList.add('active');
+  btn.classList.add('active');
+}
+
+// ── Business via Claude API ──
+async function loadBusiness(ticker) {
+  const el = COMPANY_DATA[ticker] ? document.getElementById('tab-biz') : null;
+  if (!el) return;
+  const prompt = COMPANY_DATA[ticker].bizPrompt;
+  try {
+    const resp = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 1000,
+        messages: [{ role: 'user', content: prompt }]
+      })
+    });
+    const data = await resp.json();
+    const text = data.content[0].text;
+    const formatted = text.split('\n\n').filter(p=>p.trim()).map(p=>`<p>${p}</p>`).join('');
+    el.innerHTML = `<div class="biz-card"><div class="biz-text">${formatted}</div></div>`;
+    el.dataset.loaded = '1';
+  } catch(e) {
+    el.innerHTML = '<div class="loading" style="color:var(--red)">Could not load. Check API connectivity.</div>';
+  }
+}
+
+// ── News via RSS ──
+async function loadNews(ticker) {
+  const el = document.getElementById('tab-news');
+  const query = encodeURIComponent(COMPANY_DATA[ticker].newsQuery);
+  try {
+    const rssUrl = `https://news.google.com/rss/search?q=${query}&hl=en-US&gl=US&ceid=US:en`;
+    const proxy  = `https://api.allorigins.win/raw?url=${encodeURIComponent(rssUrl)}`;
+    const r = await fetch(proxy);
+    const text = await r.text();
+    const parser = new DOMParser();
+    const xml = parser.parseFromString(text, 'text/xml');
+    const items = Array.from(xml.querySelectorAll('item')).slice(0,8);
+    if (!items.length) throw new Error('No items');
+    el.innerHTML = `<div class="news-wrap">${items.map(item => {
+      const title  = item.querySelector('title')?.textContent || '';
+      const link   = item.querySelector('link')?.textContent || '#';
+      const pub    = item.querySelector('pubDate')?.textContent || '';
+      const source = item.querySelector('source')?.textContent || 'News';
+      const desc   = item.querySelector('description')?.textContent?.replace(/<[^>]*>/g,'').slice(0,160) || '';
+      const date   = pub ? new Date(pub).toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'}) : '';
+      return `<div class="news-item">
+        <div class="news-source">${source}</div>
+        <div class="news-title"><a href="${link}" target="_blank">${title}</a></div>
+        ${desc ? `<div class="news-summary">${desc}…</div>` : ''}
+        <div class="news-date">${date}</div>
+      </div>`;
+    }).join('')}</div>`;
+    el.dataset.loaded = '1';
+  } catch(e) {
+    el.innerHTML = '<div class="loading" style="color:var(--red)">Could not load news feed.</div>';
+  }
+}
+
+// ── Init ──
+renderComps();
+</script>
+</body>
+</html>
