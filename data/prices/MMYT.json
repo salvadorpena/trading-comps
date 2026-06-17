@@ -1,0 +1,16 @@
+{
+  "ticker": "MMYT",
+  "name": "MakeMyTrip",
+  "currency": "USD",
+  "history": [
+    {
+      "date": "2023-01-03",
+      "close": 27.37
+    },
+    {
+      "date": "2023-01-04",
+      "close": 26.96
+    },
+    {      "date": "2026-06-16",      "close": 45.68    }
+  ]
+}
